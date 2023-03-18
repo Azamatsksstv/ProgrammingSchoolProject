@@ -50,7 +50,8 @@ class Progress(models.Model):
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, blank=True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
+    # course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
+    # course = lesson.
     rating = models.PositiveIntegerField(choices=((1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')))
     comments = models.TextField(blank=True, null=True)
 

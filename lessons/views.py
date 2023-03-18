@@ -3,6 +3,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .models import Course, Lesson, Enrollment, Progress, Feedback
+from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import CourseSerializer, LessonSerializer, EnrollmentSerializer, ProgressSerializer, FeedbackSerializer
 
 
@@ -19,13 +20,13 @@ class CourseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class LessonListCreateView(generics.ListCreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAdminOrReadOnly,)
 
 
 class LessonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Lesson.objects.all()
-    # infrewg = "fr"
     serializer_class = LessonSerializer
+    permission_classes = (IsAdminOrReadOnly,)
 
 
 class EnrollmentListCreateView(generics.ListCreateAPIView):
@@ -62,3 +63,4 @@ class FeedbackListCreateView(generics.ListCreateAPIView):
 class FeedbackRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
+    permission_classes = (IsOwnerOrReadOnly,)

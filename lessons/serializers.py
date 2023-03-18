@@ -36,9 +36,9 @@ class ProgressSerializer(serializers.ModelSerializer):
 class FeedbackSerializer(serializers.ModelSerializer):
     user_username = serializers.CharField(source='user.username', read_only=True)
     lesson_title = serializers.CharField(source='lesson.title', read_only=True)
-    course_title = serializers.CharField(source='course.title', read_only=True)
+    course_title = serializers.CharField(source='lesson.course.title', read_only=True)
 
     class Meta:
         model = Feedback
-        fields = ['user', 'lesson', 'course', 'rating', 'comments', 'user_username', 'lesson_title', 'course_title']
+        fields = ['user', 'lesson', 'rating', 'comments', 'user_username', 'lesson_title', 'course_title']
         read_only_fields = ['user']
