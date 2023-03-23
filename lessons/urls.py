@@ -4,7 +4,7 @@ from .views import (
     LessonListCreateView, LessonRetrieveUpdateDestroyView,
     EnrollmentListCreateView, EnrollmentRetrieveUpdateDestroyView,
     ProgressListCreateView, ProgressRetrieveUpdateDestroyView,
-    FeedbackListCreateView, FeedbackRetrieveUpdateDestroyView,
+    FeedbackListCreateView, FeedbackRetrieveUpdateDestroyView, LessonListAPIView,
 )
 
 urlpatterns = [
@@ -18,4 +18,5 @@ urlpatterns = [
     path('progresses/<int:pk>/', ProgressRetrieveUpdateDestroyView.as_view(), name='progress-retrieve-update-destroy'),
     path('feedbacks/', FeedbackListCreateView.as_view(), name='feedback-list-create'),
     path('feedbacks/<int:pk>/', FeedbackRetrieveUpdateDestroyView.as_view(), name='feedback-retrieve-update-destroy'),
+    path('courses/<int:course_id>/lessons/', LessonListAPIView.as_view(), name='course-lessons-list'),
 ]

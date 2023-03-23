@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework import permissions
 
 from .models import Course, Lesson, Enrollment, Progress, Feedback
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
@@ -10,6 +11,7 @@ from .serializers import CourseSerializer, LessonSerializer, EnrollmentSerialize
 class CourseListCreateView(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class CourseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
@@ -21,6 +23,16 @@ class LessonListCreateView(generics.ListCreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = (IsAdminOrReadOnly,)
+
+
+class LessonListAPIView(generics.ListAPIView):
+    serializer_class = LessonSerializer
+    permission_classes = [IsAuthenticated]
+    # queryset = Lesson.objects.all()
+
+    def get_queryset(self):
+        course_id = self.kwargs.get('course_id')
+        return Lesson.objects.filter(course_id=course_id)
 
 
 class LessonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
