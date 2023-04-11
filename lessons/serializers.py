@@ -27,3 +27,16 @@ class UserCoursesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('email', 'courses',)
+
+
+class CreateLessonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+
+
+class CreateCourseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = '__all__'
+
