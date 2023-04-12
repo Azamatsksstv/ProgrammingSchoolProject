@@ -16,13 +16,8 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CreateLessonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lesson
-        fields = '__all__'
-
-
 class UserCoursesSerializer(serializers.ModelSerializer):
+    courses = CourseSerializer(many=True)
 
     class Meta:
         model = CustomUser
@@ -39,4 +34,3 @@ class CreateCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = '__all__'
-

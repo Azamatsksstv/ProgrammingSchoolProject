@@ -1,5 +1,6 @@
+from rest_framework.decorators import action
 from rest_framework import generics, viewsets, status
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
 from rest_framework import permissions
 from rest_framework.response import Response
 
@@ -10,13 +11,24 @@ from .serializers import CourseSerializer, LessonSerializer
 from users.models import CustomUser
 
 
-class CourseViewSet(viewsets.ModelViewSet):
+class ListOfCourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = IsAdminOrReadOnly,
 
 
-class LessonViewSet1(viewsets.ViewSet):
+class ListOfLessonViewSet(viewsets.ModelViewSet):
+    queryset = Lesson.objects.all()
+    serializer_class = LessonSerializer
+    # permission_classes = IsAdminUser,
+
+    def get_queryset(self):
+        course_id = self.kwargs['pk']
+        queryset = Lesson.objects.filter(course_id=course_id)
+        return queryset
+
+
+class LessonViewSet(viewsets.ViewSet):
     lesson_services: services.LessonServicesInterface = services.LessonServicesV1()
 
     def create_lesson(self, request, *args, **kwargs):
@@ -42,63 +54,3 @@ class MyCoursesViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return CustomUser.objects.filter(id=user.id)
-
-
-class LessonViewSet(viewsets.ViewSet):
-    lesson_services: services.LessonServicesInterface = services.LessonServicesV1()
-
-    def create_lesson(self, request, *args, **kwargs):
-        serializer = serializers.CreateLessonSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        data = self.lesson_services.create_lesson(data=serializer.validated_data)
-
-        return Response(data)
-
-
-class JoinCourseViewSet(viewsets.ViewSet):
-    def __init__(self):
-        self.course_service = CourseService()
-
-    def join(self, request, pk=None):
-        user_id = request.user.id  # assuming you have authentication in place
-        success = self.course_service.join_course(pk, user_id)
-
-        if success:
-            return Response({'detail': 'Course joined successfully'})
-        else:
-            return Response({'detail': 'Failed to join course'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CourseListCreateView(generics.ListCreateAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class CourseRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
-
-
-class LessonListCreateView(generics.ListCreateAPIView):
-    queryset = Lesson.objects.all()
-    serializer_class = LessonSerializer
-    permission_classes = (IsAdminOrReadOnly,)
-
-
-class LessonListAPIView(generics.ListAPIView):
-    serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated]
-    # queryset = Lesson.objects.all()
-
-    def get_queryset(self):
-        course_id = self.kwargs.get('course_id')
-        return Lesson.objects.filter(course_id=course_id)
-
-
-class LessonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Lesson.objects.all()
-    serializer_class = LessonSerializer
-    permission_classes = (IsAdminOrReadOnly,)
-
-

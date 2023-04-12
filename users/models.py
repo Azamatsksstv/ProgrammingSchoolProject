@@ -45,7 +45,7 @@ class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     username = models.CharField(blank=True, null=True, max_length=1)
     email = models.EmailField(unique=True, verbose_name=_('Email'))
-    courses = models.ManyToManyField(lessons.models.Lesson)
+    courses = models.ManyToManyField(lessons.models.Course)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
