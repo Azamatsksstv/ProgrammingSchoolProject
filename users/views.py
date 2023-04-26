@@ -1,7 +1,9 @@
-from rest_framework import status
+from rest_framework import status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
+from rest_framework.authtoken.models import Token
 
+from lessons.models import Course
 from . import serializers, services, models
 
 
@@ -40,3 +42,14 @@ class UserViewSet(ViewSet):
         tokens = self.user_services.verify_token(data=serializer.validated_data)
 
         return Response(tokens)
+
+
+class UserCapabilityViewSet(ViewSet):
+    user_services: services.UserServicesInterface = services.UserServicesV1()
+    # permission_classes = permissions.IsAdminUser
+
+    def join_course(self, request, *args, **kwargs):
+        user = request.user
+        print(user)
+        user.courses.add(Course.objects.get(id=1))
+        return Response({'user_email': user.email})

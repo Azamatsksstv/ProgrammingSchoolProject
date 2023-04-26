@@ -47,6 +47,13 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True, verbose_name=_('Email'))
     courses = models.ManyToManyField(lessons.models.Course)
 
+    user_type = models.CharField(
+        choices=choices.UserTypeChoices.choices,
+        null=True,
+        blank=True,
+        max_length=8,
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

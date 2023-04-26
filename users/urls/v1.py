@@ -13,5 +13,6 @@ urlpatterns = [
     #
     # path('join/<int:course_id>/', views.UserViewSet.as_view({'post': 'join_to_course'})),
     #
+    path('join/', views.UserCapabilityViewSet.as_view({'post': 'join_course'})),
     path('auth/', include('djoser.urls')),
 ]

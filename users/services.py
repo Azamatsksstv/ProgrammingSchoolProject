@@ -15,6 +15,8 @@ class UserServicesInterface(Protocol):
 
     def verify_user(self, data: OrderedDict) -> models.CustomUser | None: ...
 
+    def join_course(self, data: OrderedDict):...
+
 
 class UserServicesV1:
     user_repos: repos.UserReposInterface = repos.UserReposV1()
@@ -51,3 +53,8 @@ class UserServicesV1:
             'email': user_data['email'],
         })
         self._send_letter_to_email(user=user)
+
+    def join_course(self, data: OrderedDict):
+        user_id = data['user_id']
+        course_id = data['course_id']
+        self.user_repos.join_course(user_id=user_id, course_id=course_id)
