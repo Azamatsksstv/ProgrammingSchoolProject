@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'lessons',
     'users',
+    'reviews',
 
     'rest_framework',
     'rest_framework.authtoken',
