@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'djoser',
-    'phonenumber_field'
+    'phonenumber_field',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
